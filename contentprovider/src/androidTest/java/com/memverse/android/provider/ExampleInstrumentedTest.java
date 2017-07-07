@@ -1,4 +1,4 @@
-package com.memverse.android.contentprovider;
+package com.memverse.android.provider;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
