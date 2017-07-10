@@ -1,6 +1,5 @@
 package com.memverse.android.provider;
 
-import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 /**
@@ -25,11 +24,10 @@ final class MemverseContract {
 
         static final String SQL_CREATE_TABLE = TextUtils.join(" ", new String[]{
                 "CREATE TABLE IF NOT EXISTS", TABLE_NAME, "(",
-                Columns._ID, "INTEGER PRIMARY KEY AUTOINCREMENT,",
-                Columns.KEY_ID, "INTEGER,",
-                Columns.KEY_VERSE_ID, "INTEGER,",
-                Columns.KEY_USER_ID, "INTEGER,",
-                Columns.KEY_EFACTOR, "NUMBER,",
+                Columns.KEY_ID, "INTEGER PRIMARY KEY,", // TODO check compatibility with BaseColumns._ID
+                Columns.KEY_VERSE_ID, "INTEGER NOT NULL,",
+                Columns.KEY_USER_ID, "INTEGER NOT NULL,",
+                Columns.KEY_EFACTOR, "NUMERIC,",
                 Columns.KEY_TEST_INTERVAL, "INTEGER,",
                 Columns.KEY_REP_N, "INTEGER,",
                 Columns.KEY_NEXT_TEST, "DATE,",
@@ -44,7 +42,6 @@ final class MemverseContract {
         static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
         static final String[] COLUMN_KEYS = new String[]{
-                Columns._ID,
                 Columns.KEY_ID,
                 Columns.KEY_VERSE_ID,
                 Columns.KEY_USER_ID,
@@ -60,7 +57,7 @@ final class MemverseContract {
                 Columns.KEY_SUBSECTION
         };
 
-        interface Columns extends BaseColumns {
+        interface Columns {
             String KEY_ID = "id";
             String KEY_VERSE_ID = "verse_id";
             String KEY_USER_ID = "user_id";

@@ -47,13 +47,16 @@ public class MemverseContentProvider extends ContentProvider {
         switch (URI_MATCHER.match(uri)) {
             case MemverseContract.Memverses.URI_ALL:
                 if (TextUtils.isEmpty(sortOrder)) {
-                    sortOrder = MemverseContract.Memverses.Columns._ID + " ASC";
+                    sortOrder = MemverseContract.Memverses.Columns.KEY_ID + " ASC";
                 }
                 break;
             case MemverseContract.Memverses.URI_SINGLE:
                 // append the id path param to the WHERE clause for the query
                 // TODO use selectionArgs for _ID
-                selection = selection + MemverseContract.Memverses.Columns._ID + " = " + ContentUris.parseId(uri);
+                if (selection == null) {
+                    selection = "";
+                }
+                selection = selection + " " + MemverseContract.Memverses.Columns.KEY_ID + " = " + ContentUris.parseId(uri);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognised URI");
@@ -101,5 +104,15 @@ public class MemverseContentProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         mDatabase = mDatabaseHelper.getWritableDatabase();
         return mDatabase.delete(MemverseContract.Memverses.TABLE_NAME, selection, selectionArgs);
+    }
+
+    /**
+     * For tests only
+     *
+     * @return SQLiteOpenHelper
+     * @see <a href="https://android.googlesource.com/platform/development/+/master/samples/NotePad/src/com/example/android/notepad/NotePadProvider.java">Android Notepad sample app</a>
+     */
+    DatabaseHelper getOpenHelperForTest() {
+        return mDatabaseHelper;
     }
 }
