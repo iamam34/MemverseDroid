@@ -12,18 +12,13 @@ import android.text.TextUtils;
 
 public class MemverseContentProvider extends ContentProvider {
 
-    private static final String AUTHORITY = "com.memverse.android.provider";
-    private static final String DB_NAME = "com.memverse.android.provider.database";
-    private static final int DB_VERSION = 1;
-    private static final String DB_TABLE_NAME = "memverses";
-
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-    private static final int URI_ALL = 1;
-    private static final int URI_SINGLE = 2;
 
     static {
-        URI_MATCHER.addURI(AUTHORITY, DB_TABLE_NAME, URI_ALL);
-        URI_MATCHER.addURI(AUTHORITY, DB_TABLE_NAME + "/#", URI_SINGLE);
+        URI_MATCHER.addURI(MemverseContract.AUTHORITY, MemverseContract.Memverses.TABLE_NAME,
+                MemverseContract.Memverses.URI_ALL);
+        URI_MATCHER.addURI(MemverseContract.AUTHORITY, MemverseContract.Memverses.TABLE_NAME + "/#",
+                MemverseContract.Memverses.URI_SINGLE);
     }
 
     private DatabaseHelper mDatabaseHelper;
@@ -31,18 +26,17 @@ public class MemverseContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDatabaseHelper = new DatabaseHelper(getContext(), DB_NAME, null, DB_VERSION, DB_TABLE_NAME);
-
+        mDatabaseHelper = new DatabaseHelper(getContext(), MemverseContract.DATABASE_NAME, null, MemverseContract.DATABASE_VERSION);
         return true;
     }
 
     @Override
     public String getType(@NonNull Uri uri) {
         switch (URI_MATCHER.match(uri)) {
-            case URI_ALL:
-                return "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + DB_TABLE_NAME;
-            case URI_SINGLE:
-                return "vnd.android.cursor.item/vnd." + AUTHORITY + "." + DB_TABLE_NAME;
+            case MemverseContract.Memverses.URI_ALL:
+                return "vnd.android.cursor.dir/vnd." + MemverseContract.AUTHORITY + "." + MemverseContract.Memverses.TABLE_NAME;
+            case MemverseContract.Memverses.URI_SINGLE:
+                return "vnd.android.cursor.item/vnd." + MemverseContract.AUTHORITY + "." + MemverseContract.Memverses.TABLE_NAME;
             default:
                 return null;
         }
@@ -51,27 +45,27 @@ public class MemverseContentProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         switch (URI_MATCHER.match(uri)) {
-            case URI_ALL:
+            case MemverseContract.Memverses.URI_ALL:
                 if (TextUtils.isEmpty(sortOrder)) {
-                    sortOrder = "_ID ASC";
+                    sortOrder = MemverseContract.Memverses.Columns._ID + " ASC";
                 }
                 break;
-            case URI_SINGLE:
+            case MemverseContract.Memverses.URI_SINGLE:
                 // append the id path param to the WHERE clause for the query
                 // TODO use selectionArgs for _ID
-                selection = selection + "_ID = " + ContentUris.parseId(uri);
+                selection = selection + MemverseContract.Memverses.Columns._ID + " = " + ContentUris.parseId(uri);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognised URI");
         }
         mDatabase = mDatabaseHelper.getReadableDatabase();
-        return mDatabase.query(DB_TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+        return mDatabase.query(MemverseContract.Memverses.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
         // TODO validation
-        if (URI_MATCHER.match(uri) != URI_ALL) {
+        if (URI_MATCHER.match(uri) != MemverseContract.Memverses.URI_ALL) {
             throw new IllegalArgumentException("Operation not supported for this URI");
         }
 
@@ -80,24 +74,32 @@ public class MemverseContentProvider extends ContentProvider {
         throw new UnsupportedOperationException("Not yet implemented");
 
         // TODO research nullColumnHack
+        // final Uri uri;
         // final long id = mDatabase.insert(DB_TABLE_NAME, null, values);
-        // return ContentUris.withAppendedId(uri, id);
+        // if (id > 0) {
+        //      uri = ContentUris.withAppendedId(uri, id);
+        //      // if not sync adapter
+        //      getContext().getContentResolver().notifyChange(uri, null);
+        // } else {
+        //      uri = null;
+        // }
+        // return uri;
     }
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         // TODO validation
-        if (URI_MATCHER.match(uri) != URI_SINGLE) {
+        if (URI_MATCHER.match(uri) != MemverseContract.Memverses.URI_SINGLE) {
             throw new IllegalArgumentException("Operation not supported for this URI");
         }
 
         mDatabase = mDatabaseHelper.getWritableDatabase();
-        return mDatabase.update(DB_TABLE_NAME, values, selection, selectionArgs);
+        return mDatabase.update(MemverseContract.Memverses.TABLE_NAME, values, selection, selectionArgs);
     }
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         mDatabase = mDatabaseHelper.getWritableDatabase();
-        return mDatabase.delete(DB_TABLE_NAME, selection, selectionArgs);
+        return mDatabase.delete(MemverseContract.Memverses.TABLE_NAME, selection, selectionArgs);
     }
 }

@@ -14,12 +14,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 final class DatabaseHelper extends SQLiteOpenHelper {
 
-    private final String tableName;
-
-    DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, String tableName) {
+    DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         // if factory is null, it uses the default SQLite cursor
         super(context, name, factory, version);
-        this.tableName = tableName;
     }
 
     /**
@@ -27,28 +24,19 @@ final class DatabaseHelper extends SQLiteOpenHelper {
      * repository and SQLite reports that it doesn't exist.
      */
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_TABLE = "CREATE TABLE " +
-                tableName + " " +
-                "(" +                           // FIXME The columns in the table
-                " _ID INTEGER PRIMARY KEY, " +
-//                " WORD TEXT" +
-//                " FREQUENCY INTEGER " +
-//                " LOCALE TEXT " +
-                ")";
-
-        db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(MemverseContract.Memverses.SQL_CREATE_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        // TODO: Handle database upgrades
-        throw new UnsupportedOperationException();
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // TODO do db migration better than destroy and recreate
+        db.execSQL(MemverseContract.Memverses.SQL_DELETE_TABLE);
+        onCreate(db);
     }
 
     @Override
-    public void onDowngrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        // TODO: Handle database downgrades
-        throw new UnsupportedOperationException();
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
     }
 
 }
