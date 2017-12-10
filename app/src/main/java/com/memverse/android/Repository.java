@@ -17,6 +17,10 @@ public class Repository {
         return verses;
     }
 
+    public boolean rateVerse(int rating) {
+        throw new UnsupportedOperationException("Verse rating not yet implemented. Rating=" + rating);
+    }
+
     private Verse makeFakeVerse() {
         return new Verse(
                 111L,

@@ -6,4 +6,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_review">Review</string>
+    <string name="action_show_full_text">Show full text</string>
+    <string name="message_review_correct">Correct! Rate the verse to move on.</string>
 </resources>
