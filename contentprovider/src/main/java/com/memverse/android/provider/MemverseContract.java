@@ -1,5 +1,6 @@
 package com.memverse.android.provider;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
 /**
@@ -19,8 +20,11 @@ final class MemverseContract {
     static final class Memverses {
         static final String TABLE_NAME = "memverses";
 
-        static final int URI_ALL = 8000;
-        static final int URI_SINGLE = 8001;
+        static final Uri URI = new Uri.Builder()
+                .scheme("content")
+                .authority(AUTHORITY)
+                .appendEncodedPath("/" + TABLE_NAME)
+                .build();
 
         static final String SQL_CREATE_TABLE = TextUtils.join(" ", new String[]{
                 "CREATE TABLE IF NOT EXISTS", TABLE_NAME, "(",

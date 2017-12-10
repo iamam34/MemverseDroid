@@ -1,6 +1,7 @@
 package com.memverse.android.provider;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,7 +12,9 @@ import android.test.ProviderTestCase2;
 
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 /**
@@ -23,12 +26,17 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<MemverseContentProvider> {
 
+    private static final int NUM_MEMVERSES = 5;
+
     private ContentResolver mMockResolver;
     private SQLiteDatabase mDb;
 
     public MemverseContentProviderInstrumentedTest() {
         super(MemverseContentProvider.class, MemverseContract.AUTHORITY);
     }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Before
     @Override
@@ -51,30 +59,31 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
     }
 
     private ContentValues getContentValues(int id, int verseId, int userId) {
-        ContentValues v = new ContentValues();
+        final ContentValues v = getContentValues(verseId, userId);
         v.put(MemverseContract.Memverses.Columns.KEY_ID, id);
+        return v;
+    }
+
+    private ContentValues getContentValues(int verseId, int userId) {
+        final ContentValues v = new ContentValues();
         v.put(MemverseContract.Memverses.Columns.KEY_VERSE_ID, verseId);
         v.put(MemverseContract.Memverses.Columns.KEY_USER_ID, userId);
         return v;
     }
 
     @Test
-    public void canRetrieveAllMemverses() {
-        final int NUM_MEMVERSES = 5;
-        final Uri uri = Uri.parse("content://" + MemverseContract.AUTHORITY + "/" + MemverseContract.Memverses.TABLE_NAME);
+    public void RetrieveAllMemverses() {
         insertData(NUM_MEMVERSES);
 
-        final Cursor cursor = mMockResolver.query(uri, null, null, null, null);
+        final Cursor cursor = mMockResolver.query(MemverseContract.Memverses.URI, null, null, null, null);
 
         assertNotNull(cursor);
         assertEquals(NUM_MEMVERSES, cursor.getCount());
     }
 
     @Test
-    public void canRetrieveAllMemversesWhenThereAreNone() {
-        final Uri uri = Uri.parse("content://" + MemverseContract.AUTHORITY + "/" + MemverseContract.Memverses.TABLE_NAME);
-
-        final Cursor cursor = mMockResolver.query(uri, null, null, null, null);
+    public void RetrieveAllMemverses_WhenThereAreNone_DoesNotThrowException() {
+        final Cursor cursor = mMockResolver.query(MemverseContract.Memverses.URI, null, null, null, null);
 
         assertNotNull(cursor);
         assertEquals(0, cursor.getCount());
@@ -82,16 +91,14 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
 
     @Ignore
     @Test
-    public void canRetrieveMemversesWithSelectionFilter() {
+    public void RetrieveSomeMemversesWithSelectionFilter() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Test
-    public void canRetrieveSingleMemverse() {
-        final int NUM_MEMVERSES = 5;
-        final int id = 3;
-        final Uri uri = Uri.parse("content://" + MemverseContract.AUTHORITY + "/" + MemverseContract.Memverses.TABLE_NAME + "/" + id);
+    public void RetrieveSingle() {
         insertData(NUM_MEMVERSES);
+        final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 3);
 
         final Cursor cursor = mMockResolver.query(uri, null, null, null, null);
 
@@ -100,70 +107,92 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
     }
 
     @Test
-    public void cannotRetrieveSingleMemverseThatDoesNotExist() {
-        final int id = 40;
-        final Uri uri = Uri.parse("content://" + MemverseContract.AUTHORITY + "/" + MemverseContract.Memverses.TABLE_NAME + "/" + id);
-        insertData(5);
+    public void RetrieveSingle_WhenItDoesNotExist_DoesNotThrowException() {
+        insertData(NUM_MEMVERSES);
+        final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 20);
 
         final Cursor cursor = mMockResolver.query(uri, null, null, null, null);
 
         assertNotNull(cursor);
         assertEquals(0, cursor.getCount());
-
-        cursor.close();
     }
 
-    @Ignore
     @Test
-    public void canInsertMemverse() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Insert() {
+        final Uri resultUri = mMockResolver.insert(MemverseContract.Memverses.URI, getContentValues(40, 50));
+
+        assertEquals(1, ContentUris.parseId(resultUri));
     }
 
-    @Ignore
     @Test
-    public void cannotInsertMemverseThatAlreadyExists() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Insert_WithAnId_ThrowsException() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("KEY_ID not permitted for insert operation");
+
+
+        mMockResolver.insert(MemverseContract.Memverses.URI, getContentValues(3, 40, 50));
     }
 
-    @Ignore
     @Test
-    public void cannotInsertOnUriWithAppendedId() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Insert_OnUriWithAppendedId_IsNotAllowed() {
+        final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 3);
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Operation not supported for this URI");
+
+        mMockResolver.insert(uri, getContentValues(40, 50));
     }
 
-    @Ignore
     @Test
-    public void canUpdateMemverse() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Update() {
+        insertData(NUM_MEMVERSES);
+        final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 3);
+
+        final int numRowsChanged = mMockResolver.update(uri, getContentValues(40, 50), null, null);
+
+        assertEquals(1, numRowsChanged);
     }
 
-    @Ignore
     @Test
-    public void cannotUpdateMemverseThatDoesNotExist() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Update_WhenItDoesNotExist_DoesNotThrowException() {
+        final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 20);
+
+        final int numRowsChanged = mMockResolver.update(uri, getContentValues(40, 50), null, null);
+
+        assertEquals(0, numRowsChanged);
     }
 
-    @Ignore
     @Test
-    public void cannotUpdateOnCollectionUri() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Update_OnCollectionUri_IsNotAllowed() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Operation not supported for this URI");
+
+        mMockResolver.update(MemverseContract.Memverses.URI, getContentValues(40, 50), null, null);
     }
 
-    @Ignore
     @Test
-    public void canDeleteMemverse() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Delete() {
+        insertData(NUM_MEMVERSES);
+        final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 3);
+
+        final int numRowsChanged = mMockResolver.delete(uri, null, null);
+
+        assertEquals(1, numRowsChanged);
     }
 
-    @Ignore
     @Test
-    public void cannotDeleteMemverseThatDoesNotExist() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Delete_WhenItDoesNotExist_DoesNotThrowException() {
+        final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 20);
+
+        final int numRowsChanged = mMockResolver.delete(uri, null, null);
+
+        assertEquals(0, numRowsChanged);
     }
 
-    @Ignore
     @Test
-    public void cannotDeleteOnCollectionUri() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void Delete_OnCollectionUri_IsNotAllowed() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Operation not supported for this URI");
+
+        mMockResolver.delete(MemverseContract.Memverses.URI, null, null);
     }
 }
