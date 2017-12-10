@@ -1,1 +1,1 @@
-include ':app', ':contentprovider'
+include ':app', ':contentprovider', ':datacontracts'
