@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/ratingBar"
+        android:id="@+id/rating_bar"
         android:numStars="5"
         android:rating="0"
         android:stepSize="1"/>
@@ -30,6 +30,7 @@
             android:text="@string/action_show_full_text"
             android:labelFor="@id/switch_show_full_text"
             android:textAlignment="textEnd"
+            android:paddingStart="16dp"
             android:paddingEnd="16dp"/>
 
         <android.support.v7.widget.SwitchCompat

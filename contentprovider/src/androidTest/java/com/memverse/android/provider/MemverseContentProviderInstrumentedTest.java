@@ -36,7 +36,7 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
     }
 
     @Rule
-    public ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Before
     @Override
@@ -47,8 +47,8 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
         mDb = getProvider().getOpenHelperForTest().getWritableDatabase();
     }
 
-    private void insertData(int numMemverses) {
-        for (int i = 0; i < numMemverses; i++) {
+    private void insertData() {
+        for (int i = 0; i < NUM_MEMVERSES; i++) {
             ContentValues contentValues = getContentValues(i, i * 3, 100);
             mDb.insertOrThrow(
                     MemverseContract.Memverses.TABLE_NAME,
@@ -73,7 +73,7 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
 
     @Test
     public void RetrieveAllMemverses() {
-        insertData(NUM_MEMVERSES);
+        insertData();
 
         final Cursor cursor = mMockResolver.query(MemverseContract.Memverses.URI, null, null, null, null);
 
@@ -97,7 +97,7 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
 
     @Test
     public void RetrieveSingle() {
-        insertData(NUM_MEMVERSES);
+        insertData();
         final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 3);
 
         final Cursor cursor = mMockResolver.query(uri, null, null, null, null);
@@ -108,7 +108,7 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
 
     @Test
     public void RetrieveSingle_WhenItDoesNotExist_DoesNotThrowException() {
-        insertData(NUM_MEMVERSES);
+        insertData();
         final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 20);
 
         final Cursor cursor = mMockResolver.query(uri, null, null, null, null);
@@ -144,7 +144,7 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
 
     @Test
     public void Update() {
-        insertData(NUM_MEMVERSES);
+        insertData();
         final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 3);
 
         final int numRowsChanged = mMockResolver.update(uri, getContentValues(40, 50), null, null);
@@ -171,7 +171,7 @@ public class MemverseContentProviderInstrumentedTest extends ProviderTestCase2<M
 
     @Test
     public void Delete() {
-        insertData(NUM_MEMVERSES);
+        insertData();
         final Uri uri = ContentUris.withAppendedId(MemverseContract.Memverses.URI, 3);
 
         final int numRowsChanged = mMockResolver.delete(uri, null, null);
