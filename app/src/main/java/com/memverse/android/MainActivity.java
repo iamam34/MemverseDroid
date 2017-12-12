@@ -1,5 +1,6 @@
 package com.memverse.android;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,7 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
+import com.memverse.android.list.MemversesListFragment;
 import com.memverse.android.review.ReviewFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -65,19 +68,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        // hide keyboard if no view has focus
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        View currentFocus = this.getCurrentFocus();
+        if (currentFocus != null) {
+            assert inputManager != null;
+            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
+
+        Fragment fragment = null;
+        switch (menuItem.getItemId()) {
             case R.id.menu_item_nav_review:
-                Fragment fragment = new ReviewFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.content_frame, fragment)
-                        .commit();
-                setTitle(R.string.title_review);
+                fragment = new ReviewFragment();
+                break;
+            case R.id.menu_item_nav_list:
+                fragment = new MemversesListFragment();
                 break;
             default:
                 break;
         }
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
+        }
+
+        setTitle(menuItem.getTitle());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

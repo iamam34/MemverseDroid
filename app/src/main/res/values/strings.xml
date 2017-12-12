@@ -9,4 +9,5 @@
     <string name="action_show_full_text">Show full text</string>
     <string name="message_review_correct">Correct! Rate the verse to move on.</string>
     <string name="desc_profile_avatar">profile avatar</string>
+    <string name="title_list">Verse List</string>
 </resources>

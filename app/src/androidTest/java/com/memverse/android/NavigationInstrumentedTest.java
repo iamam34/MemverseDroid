@@ -54,6 +54,18 @@ public class NavigationInstrumentedTest {
     }
 
     @Test
+    public void clickOnVerseListNavigationItem_ShowsVerseListScreen() {
+        onView(withId(R.id.drawer_layout))
+                .check(matches(isClosed(Gravity.START)))
+                .perform(open());
+
+        onView(withId(R.id.nav_view))
+                .perform(navigateTo(R.id.menu_item_nav_list));
+
+        onView(withId(R.id.recyclerView_memverses_list)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void clickOnNavOpen_OpensNavigation() {
         // Check that drawer is closed at startup
         onView(withId(R.id.drawer_layout))

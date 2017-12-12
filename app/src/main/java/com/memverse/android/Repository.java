@@ -11,17 +11,29 @@ import java.util.List;
  */
 
 public class Repository {
-    public List<Verse> getVerses() {
+    public static List<Verse> getVerses() {
         ArrayList<Verse> verses = new ArrayList<>();
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse());
         verses.add(makeFakeVerse());
         return verses;
     }
 
-    public boolean rateVerse(int rating) {
+    public static boolean rateVerse(int rating) {
         throw new UnsupportedOperationException("Verse rating not yet implemented. Rating=" + rating);
     }
 
-    private Verse makeFakeVerse() {
+    private static Verse makeFakeVerse() {
         return new Verse(
                 111L,
                 null,
