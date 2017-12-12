@@ -2,6 +2,7 @@ package com.memverse.android;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.memverse.datacontracts.Verse;
 
@@ -14,6 +15,8 @@ import java.util.List;
  */
 
 public class Repository {
+    private static final String LOG_TAG = Repository.class.getCanonicalName();
+
     public static List<Verse> getVerses() {
         ArrayList<Verse> verses = new ArrayList<>();
         verses.add(makeFakeVerse(1L));
@@ -32,8 +35,8 @@ public class Repository {
         return verses;
     }
 
-    public static boolean rateVerse(int rating) {
-        throw new UnsupportedOperationException("Verse rating not yet implemented. Rating=" + rating);
+    public static void rateVerse(int rating) {
+        Log.i(LOG_TAG, "Verse rating not yet implemented. Rating=" + rating);
     }
 
     private static Verse makeFakeVerse(long verseId) {

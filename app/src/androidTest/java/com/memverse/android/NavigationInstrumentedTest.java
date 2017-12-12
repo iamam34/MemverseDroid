@@ -50,7 +50,7 @@ public class NavigationInstrumentedTest {
                 .perform(navigateTo(R.id.menu_item_nav_review));
 
         // Check that Review screen was opened.
-        onView(withId(R.id.rating_bar)).check(matches(isDisplayed()));
+        onView(withId(R.id.ratingBar)).check(matches(isDisplayed()));
     }
 
     @Test

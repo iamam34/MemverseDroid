@@ -16,11 +16,16 @@ import com.memverse.datacontracts.Verse;
 public class ReviewViewModel extends ViewModel {
     private LiveData<Verse> verse;
 
-    void init(long verseId) {
+    public void init(long verseId) {
         this.verse = Repository.getVerse(verseId);
     }
 
-    LiveData<Verse> getVerse() {
+    public LiveData<Verse> getVerse() {
         return verse;
     }
+
+    public void rateVerse(int rating) {
+        Repository.rateVerse(rating);
+    }
+
 }

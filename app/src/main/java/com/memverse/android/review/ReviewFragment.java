@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -26,8 +27,6 @@ public class ReviewFragment extends Fragment {
 
     public static final String KEY_VERSEID = ReviewFragment.class.getCanonicalName() + ".verseid";
 
-    private TextView textView;
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -39,25 +38,39 @@ public class ReviewFragment extends Fragment {
         viewModel.getVerse().observe(this, new Observer<Verse>() {
             @Override
             public void onChanged(@Nullable Verse verse) {
-                textView.setText(verse.text);
+                TextView textView = getActivity().findViewById(R.id.textView_fullText);
+                if (textView != null && verse != null) {
+                    textView.setText(verse.text);
+                }
             }
         });
-
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_review, container, false);
-        textView = view.findViewById(R.id.textView_fullText);
+        final ReviewViewModel viewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+
         final SwitchCompat switchView = view.findViewById(R.id.switch_show_full_text);
         final ViewSwitcher viewSwitcher = view.findViewById(R.id.viewSwitcher_showFullText);
+        final RatingBar ratingBar = view.findViewById(R.id.ratingBar);
+
         switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 viewSwitcher.showNext();
             }
         });
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if (fromUser) {
+                    viewModel.rateVerse((int) rating);
+                }
+            }
+        });
+
         return view;
     }
 }
