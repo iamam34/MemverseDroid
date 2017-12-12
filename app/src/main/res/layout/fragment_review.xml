@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/memverse_detail"
               style="?android:attr/textAppearanceLarge"
               android:orientation="vertical"
@@ -9,46 +8,47 @@
               android:padding="16dp"
               tools:context="com.memverse.android.review.ReviewFragment">
 
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switch_show_full_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/action_show_full_text"
+        android:switchPadding="16dp"/>
+
+    <ViewSwitcher
+        android:id="@+id/viewSwitcher_showFullText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/editText_guess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine|textCapSentences"
+            android:freezesText="true"
+            android:contentDescription="@string/desc_editText_guess"
+            tools:ignore="LabelFor"/>
+
+        <EditText
+            android:id="@+id/textView_fullText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:editable="false"
+            android:textIsSelectable="true"
+            tools:ignore="LabelFor"/>
+
+    </ViewSwitcher>
+
     <RatingBar
+        android:id="@+id/rating_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/rating_bar"
         android:numStars="5"
         android:rating="0"
         android:stepSize="1"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/action_show_full_text"
-            android:labelFor="@id/switch_show_full_text"
-            android:textAlignment="textEnd"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"/>
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switch_show_full_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:switchPadding="16dp"/>
-    </LinearLayout>
-
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/editText_guess"
-        android:layout_weight="1"
-        android:gravity="top"
-        android:text=""/>
 
 </LinearLayout>

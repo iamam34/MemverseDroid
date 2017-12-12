@@ -5,9 +5,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.memverse.android.R;
 import com.memverse.datacontracts.Verse;
@@ -19,7 +23,10 @@ import com.memverse.datacontracts.Verse;
  */
 
 public class ReviewFragment extends Fragment {
+
     public static final String KEY_VERSEID = ReviewFragment.class.getCanonicalName() + ".verseid";
+
+    private TextView textView;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -32,7 +39,7 @@ public class ReviewFragment extends Fragment {
         viewModel.getVerse().observe(this, new Observer<Verse>() {
             @Override
             public void onChanged(@Nullable Verse verse) {
-                // TODO update ui
+                textView.setText(verse.text);
             }
         });
 
@@ -41,6 +48,16 @@ public class ReviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_review, container, false);
+        View view = inflater.inflate(R.layout.fragment_review, container, false);
+        textView = view.findViewById(R.id.textView_fullText);
+        final SwitchCompat switchView = view.findViewById(R.id.switch_show_full_text);
+        final ViewSwitcher viewSwitcher = view.findViewById(R.id.viewSwitcher_showFullText);
+        switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                viewSwitcher.showNext();
+            }
+        });
+        return view;
     }
 }
