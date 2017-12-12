@@ -7,7 +7,7 @@ Supports Android 4.4 KitKat (API 19) and above. Designed for phone-sized screens
 ### Basic Features (in approximate order of priority)
 You can...
 - [ ] practise example verses
-- [ ] list example verses
+- [x] list example verses
 - [ ] connect to your memverse.com account
 - [ ] practise and list your verses with a network connection
 - [ ] rate your verse recall with a network connection
