@@ -1,5 +1,6 @@
 package com.memverse.android.review;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.memverse.android.Repository;
@@ -11,35 +12,15 @@ import com.memverse.datacontracts.Verse;
  * Created by amy on 10/12/17.
  */
 
+@SuppressWarnings("WeakerAccess")
 public class ReviewViewModel extends ViewModel {
+    private LiveData<Verse> verse;
 
-    private final Repository _repository;
-
-    private Verse currentVerse;
-    private String guess;
-
-    public ReviewViewModel(Repository repository) { // TODO use Dagger2 for DependencyInjection
-        _repository = repository;
-
-        guess = "";
+    void init(long verseId) {
+        this.verse = Repository.getVerse(verseId);
     }
 
-    public Verse getCurrentVerse() {
-        if (currentVerse == null) {
-            currentVerse = _repository.getVerses().get(0);
-        }
-        return currentVerse;
-    }
-
-    public boolean rateVerse(int rating) {
-        return _repository.rateVerse(rating);
-    }
-
-    public String getGuess() {
-        return guess;
-    }
-
-    public void setGuess(String guess) {
-        this.guess = guess;
+    LiveData<Verse> getVerse() {
+        return verse;
     }
 }

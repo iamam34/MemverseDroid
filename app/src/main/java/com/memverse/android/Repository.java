@@ -1,5 +1,8 @@
 package com.memverse.android;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+
 import com.memverse.datacontracts.Verse;
 
 import java.util.ArrayList;
@@ -13,19 +16,19 @@ import java.util.List;
 public class Repository {
     public static List<Verse> getVerses() {
         ArrayList<Verse> verses = new ArrayList<>();
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
-        verses.add(makeFakeVerse());
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(1L));
         return verses;
     }
 
@@ -33,9 +36,9 @@ public class Repository {
         throw new UnsupportedOperationException("Verse rating not yet implemented. Rating=" + rating);
     }
 
-    private static Verse makeFakeVerse() {
+    private static Verse makeFakeVerse(long verseId) {
         return new Verse(
-                111L,
+                verseId,
                 null,
                 1L,
                 "Genesis",
@@ -47,5 +50,11 @@ public class Repository {
                 false,
                 null,
                 null);
+    }
+
+    public static LiveData<Verse> getVerse(long verseId) {
+        MutableLiveData<Verse> liveData = new MutableLiveData<>();
+        liveData.setValue(makeFakeVerse(verseId));
+        return liveData;
     }
 }
