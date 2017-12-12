@@ -24,7 +24,6 @@ import com.memverse.android.review.ReviewFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
@@ -97,9 +96,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .beginTransaction()
                     .replace(R.id.content_frame, fragment)
                     .commit();
+            setTitle(menuItem.getTitle());
         }
 
-        setTitle(menuItem.getTitle());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -108,10 +107,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void setTitle(CharSequence title) {
-        mTitle = title;
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
-            supportActionBar.setTitle(mTitle);
+            supportActionBar.setTitle(title);
         }
     }
 
@@ -123,25 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-
-            /**
-             * Called when a drawer has settled in a completely closed state.
-             */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                setTitle(mTitle);
-            }
-
-            /**
-             * Called when a drawer has settled in a completely open state.
-             */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                setTitle(mTitle);
-            }
-        };
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
