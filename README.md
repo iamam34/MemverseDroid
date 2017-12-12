@@ -1,5 +1,5 @@
 # MemverseDroid
-Native Android app that interacts with the [Memverse](http://www.memverse.com) API. 
+Native Android app that interacts with the [Memverse](http://www.memverse.com) API. Requested by memverse [users](https://memverse.uservoice.com/forums/250391-general/suggestions/5858492-memverse-for-android) and [admins](https://www.memverse.com/volunteer) since 2010.
 
 Supports Android 4.4 KitKat (API 19) and above. Designed for phone-sized screens.
 
