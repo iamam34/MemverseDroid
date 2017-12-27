@@ -15,28 +15,54 @@ import java.util.List;
  */
 
 public class Repository {
+
     private static final String LOG_TAG = Repository.class.getCanonicalName();
 
-    public static List<Verse> getVerses() {
-        ArrayList<Verse> verses = new ArrayList<>();
+    private final ArrayList<Verse> verses;
+
+    {
+        verses = new ArrayList<>();
+        verses.add(makeFakeVerse(0L));
         verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
-        verses.add(makeFakeVerse(1L));
+        verses.add(makeFakeVerse(2L));
+        verses.add(makeFakeVerse(3L));
+        verses.add(makeFakeVerse(4L));
+        verses.add(makeFakeVerse(5L));
+        verses.add(makeFakeVerse(6L));
+        verses.add(makeFakeVerse(7L));
+        verses.add(makeFakeVerse(8L));
+        verses.add(makeFakeVerse(9L));
+        verses.add(makeFakeVerse(10L));
+        verses.add(makeFakeVerse(11L));
+        verses.add(makeFakeVerse(12L));
+        verses.add(makeFakeVerse(13L));
+    }
+
+    public List<Verse> getVerses() {
         return verses;
     }
 
-    public static void rateVerse(int rating) {
+    public void rateVerse(int rating) {
         Log.i(LOG_TAG, "Verse rating not yet implemented. Rating=" + rating);
+    }
+
+    public LiveData<Verse> getVerse(long verseId) {
+        if (verseId >= verses.size()) {
+            throw new IllegalArgumentException(String.format("%s is not a valid verseId", verseId));
+        }
+        MutableLiveData<Verse> liveData = new MutableLiveData<>();
+        liveData.setValue(verses.get((int) verseId));
+        return liveData;
+    }
+
+    public long getNextVerseId(final Long oldVerseId) {
+        long nextVerseId;
+        if (oldVerseId == null || oldVerseId < 0) {
+            nextVerseId = 0;
+        } else {
+            nextVerseId = (oldVerseId + 1) % verses.size(); // TODO filter verses on next_test date and pick earliest
+        }
+        return nextVerseId;
     }
 
     private static Verse makeFakeVerse(long verseId) {
@@ -47,17 +73,11 @@ public class Repository {
                 "Genesis",
                 "1",
                 1L,
-                "In the beginning God created heaven and earth.",
+                String.format("[%s] In the beginning God created heaven and earth.", verseId),
                 "2017-12-07",
                 "2017-12-10",
                 false,
                 null,
                 null);
-    }
-
-    public static LiveData<Verse> getVerse(long verseId) {
-        MutableLiveData<Verse> liveData = new MutableLiveData<>();
-        liveData.setValue(makeFakeVerse(verseId));
-        return liveData;
     }
 }

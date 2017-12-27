@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId()) {
             case R.id.menu_item_nav_review:
                 fragment = new ReviewFragment();
-                Bundle bundle = new Bundle();
-                bundle.putLong(ReviewFragment.KEY_VERSEID, 456L);
-                fragment.setArguments(bundle);
                 break;
             case R.id.menu_item_nav_list:
                 fragment = new MemversesListFragment();

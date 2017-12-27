@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.memverse.android.R;
-import com.memverse.android.Repository;
 
 /**
  * Fragment to display a list of verses.
@@ -29,7 +28,7 @@ public class MemversesListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_memverses_list, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_memverses_list);
-        MemversesListAdapter verseListAdapter = new MemversesListAdapter(Repository.getVerses());
+        MemversesListAdapter verseListAdapter = new MemversesListAdapter();
         recyclerView.setAdapter(verseListAdapter);
         return view;
     }

@@ -1,6 +1,9 @@
 package com.memverse.android.review;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.memverse.android.Repository;
@@ -14,18 +17,31 @@ import com.memverse.datacontracts.Verse;
 
 @SuppressWarnings("WeakerAccess")
 public class ReviewViewModel extends ViewModel {
-    private LiveData<Verse> verse;
 
-    public void init(long verseId) {
-        this.verse = Repository.getVerse(verseId);
-    }
+    public final LiveData<Verse> verse;
 
-    public LiveData<Verse> getVerse() {
-        return verse;
+    private final Repository repository;
+    private final MutableLiveData<Long> verseIdInput = new MutableLiveData<>();
+
+    public ReviewViewModel() {
+        repository = new Repository();
+
+        verseIdInput.setValue(repository.getNextVerseId(null));
+        verse = Transformations.switchMap(verseIdInput, new Function<Long, LiveData<Verse>>() {
+            @Override
+            public LiveData<Verse> apply(Long verseId) {
+                return repository.getVerse(verseId);
+            }
+        });
     }
 
     public void rateVerse(int rating) {
-        Repository.rateVerse(rating);
+        repository.rateVerse(rating);
+    }
+
+    public void goToNextVerse() {
+        long nextVerseId = repository.getNextVerseId(verseIdInput.getValue());
+        verseIdInput.setValue(nextVerseId);
     }
 
 }

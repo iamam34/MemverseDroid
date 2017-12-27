@@ -5,11 +5,14 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -25,26 +28,30 @@ import com.memverse.datacontracts.Verse;
 
 public class ReviewFragment extends Fragment {
 
-    public static final String KEY_VERSEID = ReviewFragment.class.getCanonicalName() + ".verseid";
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Bundle arguments = getArguments();
-        long verseId = arguments.getLong(KEY_VERSEID);
         ReviewViewModel viewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
-        viewModel.init(verseId);
-        viewModel.getVerse().observe(this, new Observer<Verse>() {
+        viewModel.verse.observe(this, new Observer<Verse>() {
             @Override
             public void onChanged(@Nullable Verse verse) {
-                TextView textView = getActivity().findViewById(R.id.textView_fullText);
-                if (textView != null && verse != null) {
+                FragmentActivity activity = getActivity();
+                final SwitchCompat switchView = activity.findViewById(R.id.switch_show_full_text);
+                final EditText editText = activity.findViewById(R.id.editText_guess);
+                final TextView textView = activity.findViewById(R.id.textView_fullText);
+                final RatingBar ratingBar = activity.findViewById(R.id.ratingBar);
+
+                switchView.setChecked(false);
+                ratingBar.setRating(0);
+                editText.setText(null);
+                editText.requestFocus();
+
+                if (verse != null) {
                     textView.setText(verse.text);
                 }
             }
         });
-
     }
 
     @Override
@@ -55,6 +62,7 @@ public class ReviewFragment extends Fragment {
         final SwitchCompat switchView = view.findViewById(R.id.switch_show_full_text);
         final ViewSwitcher viewSwitcher = view.findViewById(R.id.viewSwitcher_showFullText);
         final RatingBar ratingBar = view.findViewById(R.id.ratingBar);
+        final ImageButton goToNextVerseButton = view.findViewById(R.id.button_goToNextVerse);
 
         switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -65,9 +73,14 @@ public class ReviewFragment extends Fragment {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if (fromUser) {
-                    viewModel.rateVerse((int) rating);
-                }
+                goToNextVerseButton.setVisibility((rating > 0) ? View.VISIBLE : View.INVISIBLE);
+            }
+        });
+        goToNextVerseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewModel.rateVerse((int) ratingBar.getRating());
+                viewModel.goToNextVerse();
             }
         });
 

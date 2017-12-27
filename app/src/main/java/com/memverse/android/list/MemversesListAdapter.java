@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.memverse.android.Repository;
 import com.memverse.datacontracts.Verse;
 
 import java.util.List;
@@ -18,10 +19,13 @@ import java.util.Locale;
 
 class MemversesListAdapter extends RecyclerView.Adapter<MemverseViewHolder> {
 
+    private final Repository repository;
     private List<Verse> verses;
 
-    MemversesListAdapter(List<Verse> verses) {
-        this.verses = verses;
+    MemversesListAdapter() {
+        this.repository = new Repository();
+
+        this.verses = repository.getVerses();
     }
 
     @Override
@@ -41,11 +45,6 @@ class MemversesListAdapter extends RecyclerView.Adapter<MemverseViewHolder> {
     @Override
     public int getItemCount() {
         return verses.size();
-    }
-
-    void setVerses(List<Verse> verses) {
-        this.verses = verses;
-        notifyDataSetChanged();
     }
 
     private static String formatReference(Verse model) {

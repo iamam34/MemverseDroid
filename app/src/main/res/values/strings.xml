@@ -11,4 +11,5 @@
     <string name="desc_profile_avatar">Profile avatar</string>
     <string name="title_list">Verse List</string>
     <string name="desc_editText_guess">Enter your guess here</string>
+    <string name="action_go_to_next_verse">Go to next verse</string>
 </resources>
