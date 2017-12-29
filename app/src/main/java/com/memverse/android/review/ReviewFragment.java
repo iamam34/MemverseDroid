@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -18,7 +17,12 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.memverse.android.R;
+import com.memverse.android.dagger.util.ViewModelProviderFactory;
 import com.memverse.datacontracts.Verse;
+
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
 
 /**
  * Fragment to display the verse Review screen.
@@ -26,13 +30,15 @@ import com.memverse.datacontracts.Verse;
  * Created by amy on 10/12/17.
  */
 
-public class ReviewFragment extends Fragment {
+public class ReviewFragment extends DaggerFragment {
+    @Inject
+    public ViewModelProviderFactory viewModelFactory;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ReviewViewModel viewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+        ReviewViewModel viewModel = getViewModel();
         viewModel.verse.observe(this, new Observer<Verse>() {
             @Override
             public void onChanged(@Nullable Verse verse) {
@@ -57,7 +63,7 @@ public class ReviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_review, container, false);
-        final ReviewViewModel viewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+        final ReviewViewModel viewModel = getViewModel();
 
         final SwitchCompat switchView = view.findViewById(R.id.switch_show_full_text);
         final ViewSwitcher viewSwitcher = view.findViewById(R.id.viewSwitcher_showFullText);
@@ -86,4 +92,13 @@ public class ReviewFragment extends Fragment {
 
         return view;
     }
+
+    public static ReviewFragment newInstance() {
+        return new ReviewFragment();
+    }
+
+    private ReviewViewModel getViewModel() {
+        return ViewModelProviders.of(this, viewModelFactory).get(ReviewViewModel.class);
+    }
+
 }

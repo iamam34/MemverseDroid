@@ -9,6 +9,8 @@ import android.arch.lifecycle.ViewModel;
 import com.memverse.android.Repository;
 import com.memverse.datacontracts.Verse;
 
+import javax.inject.Inject;
+
 /**
  * Holds view state and defines actions invoked from the view, for the Review section.
  * <p>
@@ -23,14 +25,15 @@ public class ReviewViewModel extends ViewModel {
     private final Repository repository;
     private final MutableLiveData<Long> verseIdInput = new MutableLiveData<>();
 
-    public ReviewViewModel() {
-        repository = new Repository();
+    @Inject
+    public ReviewViewModel(Repository repository) {
+        this.repository = repository;
 
         verseIdInput.setValue(repository.getNextVerseId(null));
         verse = Transformations.switchMap(verseIdInput, new Function<Long, LiveData<Verse>>() {
             @Override
             public LiveData<Verse> apply(Long verseId) {
-                return repository.getVerse(verseId);
+                return ReviewViewModel.this.repository.getVerse(verseId);
             }
         });
     }

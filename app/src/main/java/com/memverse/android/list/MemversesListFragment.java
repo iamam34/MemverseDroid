@@ -1,8 +1,8 @@
 package com.memverse.android.list;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +10,15 @@ import android.view.ViewGroup;
 
 import com.memverse.android.R;
 
+import dagger.android.support.DaggerFragment;
+
 /**
  * Fragment to display a list of verses.
  * .
  * Created by amy on 12/12/17.
  */
 
-public class MemversesListFragment extends Fragment {
+public class MemversesListFragment extends DaggerFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,5 +33,10 @@ public class MemversesListFragment extends Fragment {
         MemversesListAdapter verseListAdapter = new MemversesListAdapter();
         recyclerView.setAdapter(verseListAdapter);
         return view;
+    }
+
+    @NonNull
+    public static MemversesListFragment newInstance() {
+        return new MemversesListFragment();
     }
 }

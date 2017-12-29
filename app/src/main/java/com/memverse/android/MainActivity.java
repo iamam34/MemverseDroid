@@ -22,6 +22,8 @@ import android.view.inputmethod.InputMethodManager;
 import com.memverse.android.list.MemversesListFragment;
 import com.memverse.android.review.ReviewFragment;
 
+import dagger.android.AndroidInjection;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -79,10 +81,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (menuItem.getItemId()) {
             case R.id.menu_item_nav_review:
-                fragment = new ReviewFragment();
+                fragment = ReviewFragment.newInstance();
                 break;
             case R.id.menu_item_nav_list:
-                fragment = new MemversesListFragment();
+                fragment = MemversesListFragment.newInstance();
                 break;
             default:
                 break;
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this); // because we are not a DaggerActivity, we do this by hand
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);

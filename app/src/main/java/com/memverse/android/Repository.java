@@ -9,6 +9,8 @@ import com.memverse.datacontracts.Verse;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Abstraction layer to retrieve and update persisted data.
  * Created by amy on 10/12/17.
@@ -36,6 +38,11 @@ public class Repository {
         verses.add(makeFakeVerse(11L));
         verses.add(makeFakeVerse(12L));
         verses.add(makeFakeVerse(13L));
+    }
+
+    @Inject
+    public Repository() {
+
     }
 
     public List<Verse> getVerses() {
