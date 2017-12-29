@@ -19,31 +19,31 @@ import javax.inject.Singleton;
 
 @Singleton
 public class ViewModelProviderFactory implements ViewModelProvider.Factory {
-    private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
+    private final Map<Class<? extends ViewModel>, Provider<ViewModel>> providerMap;
 
     @Inject
-    ViewModelProviderFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
-        this.creators = creators;
+    ViewModelProviderFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> providerMap) {
+        this.providerMap = providerMap;
     }
 
     @Override
     @NonNull
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        Provider<? extends ViewModel> creator = creators.get(modelClass);
-        if (creator == null) {
-            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : creators.entrySet()) {
+        Provider<? extends ViewModel> provider = providerMap.get(modelClass);
+        if (provider == null) {
+            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : providerMap.entrySet()) {
                 if (modelClass.isAssignableFrom(entry.getKey())) {
-                    creator = entry.getValue();
+                    provider = entry.getValue();
                     break;
                 }
             }
         }
-        if (creator == null) {
+        if (provider == null) {
             throw new IllegalArgumentException("unknown model class " + modelClass);
         }
         try {
             //noinspection unchecked
-            return (T) creator.get();
+            return (T) provider.get();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

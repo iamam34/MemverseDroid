@@ -2,8 +2,10 @@ package com.memverse.android.review;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -16,13 +18,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.memverse.android.MemverseApplication;
 import com.memverse.android.R;
+import com.memverse.android.dagger.ApplicationComponent;
 import com.memverse.android.dagger.util.ViewModelProviderFactory;
 import com.memverse.datacontracts.Verse;
-
-import javax.inject.Inject;
-
-import dagger.android.support.DaggerFragment;
 
 /**
  * Fragment to display the verse Review screen.
@@ -30,9 +30,21 @@ import dagger.android.support.DaggerFragment;
  * Created by amy on 10/12/17.
  */
 
-public class ReviewFragment extends DaggerFragment {
-    @Inject
-    public ViewModelProviderFactory viewModelFactory;
+public class ReviewFragment extends Fragment {
+
+    public ViewModelProviderFactory viewModelProviderFactory;
+
+    public static ReviewFragment newInstance() {
+        return new ReviewFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        ApplicationComponent daggerComponent = MemverseApplication.getInstance().getDaggerComponent();
+        viewModelProviderFactory = daggerComponent.viewModelProviderFactory();
+
+        super.onAttach(context);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -93,12 +105,8 @@ public class ReviewFragment extends DaggerFragment {
         return view;
     }
 
-    public static ReviewFragment newInstance() {
-        return new ReviewFragment();
-    }
-
     private ReviewViewModel getViewModel() {
-        return ViewModelProviders.of(this, viewModelFactory).get(ReviewViewModel.class);
+        return ViewModelProviders.of(this, viewModelProviderFactory).get(ReviewViewModel.class);
     }
 
 }

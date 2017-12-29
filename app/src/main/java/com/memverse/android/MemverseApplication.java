@@ -1,15 +1,9 @@
 package com.memverse.android;
 
-import android.support.v4.app.Fragment;
+import android.app.Application;
 
+import com.memverse.android.dagger.ApplicationComponent;
 import com.memverse.android.dagger.DaggerApplicationComponent;
-
-import javax.inject.Inject;
-
-import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
 
 /**
  * Top-level Android application.
@@ -17,24 +11,25 @@ import dagger.android.support.HasSupportFragmentInjector;
  * Created by amy on 29/12/17.
  */
 
-public class MemverseApplication extends DaggerApplication implements HasSupportFragmentInjector {
+public class MemverseApplication extends Application {
 
-    @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingFragmentInjector;
+    private static MemverseApplication instance;
 
-    @Override
-    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
-        return DaggerApplicationComponent.create();
+    private ApplicationComponent component;
+
+    public static MemverseApplication getInstance() {
+        return instance;
     }
 
-    /**
-     * Implements HasSupportFragmentInjector because superclass DaggerApplication only handles non-support Fragments.
-     *
-     * @return dispatchingFragmentInjector
-     */
+    public ApplicationComponent getDaggerComponent() {
+        return component;
+    }
+
     @Override
-    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
-        return dispatchingFragmentInjector;
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+        component = DaggerApplicationComponent.create();
     }
 
 }
