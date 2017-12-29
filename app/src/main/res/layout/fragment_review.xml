@@ -9,7 +9,7 @@
               tools:context="com.memverse.android.review.ReviewFragment">
 
     <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switch_show_full_text"
+        android:id="@+id/switch_showFullText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -29,10 +29,7 @@
             android:inputType="textMultiLine|textCapSentences"
             android:freezesText="true"
             android:contentDescription="@string/desc_editText_guess"
-            tools:ignore="LabelFor">
-
-            <requestFocus/>
-        </EditText>
+            tools:ignore="LabelFor"/>
 
         <EditText
             android:id="@+id/textView_fullText"

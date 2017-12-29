@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (menuItem.getItemId()) {
             case R.id.menu_item_nav_review:
-                fragment = new ReviewFragment();
+                fragment = ReviewFragment.newInstance();
                 break;
             case R.id.menu_item_nav_list:
-                fragment = new MemversesListFragment();
+                fragment = MemversesListFragment.newInstance();
                 break;
             default:
                 break;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.content_frame, fragment)
+                    .replace(R.id.frameLayout_content, fragment)
                     .commit();
             setTitle(menuItem.getTitle());
         }

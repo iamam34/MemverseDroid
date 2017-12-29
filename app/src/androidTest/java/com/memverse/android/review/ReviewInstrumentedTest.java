@@ -60,7 +60,7 @@ public class ReviewInstrumentedTest {
 
     @Test
     public void initialState() {
-        onView(withId(R.id.switch_show_full_text)).check(matches(isNotChecked()));
+        onView(withId(R.id.switch_showFullText)).check(matches(isNotChecked()));
         onView(withId(R.id.editText_guess)).check(matches(allOf(withText(""), isDisplayed(), hasFocus())));
         onView(withId(R.id.textView_fullText)).check(matches(allOf(not(withText("")), not(isDisplayed()))));
         onView(withId(R.id.ratingBar)).check(matches(isDisplayed()));
@@ -69,9 +69,9 @@ public class ReviewInstrumentedTest {
 
     @Test
     public void switchShowFullTextOn_showsFullText() {
-        onView(withId(R.id.switch_show_full_text)).perform(setSwitchValue(true));
+        onView(withId(R.id.switch_showFullText)).perform(setSwitchValue(true));
 
-        onView(withId(R.id.switch_show_full_text)).check(matches(isChecked()));
+        onView(withId(R.id.switch_showFullText)).check(matches(isChecked()));
         onView(withId(R.id.editText_guess)).check(matches(not(isDisplayed())));
         onView(withId(R.id.textView_fullText)).check(matches(isDisplayed()));
     }
@@ -79,10 +79,10 @@ public class ReviewInstrumentedTest {
     @Test
     public void switchShowFullTextOff_showsGuessWithExistingText() {
         onView(withId(R.id.editText_guess)).perform(typeText("This is my guess"));
-        onView(withId(R.id.switch_show_full_text)).perform(setSwitchValue(true));
-        onView(withId(R.id.switch_show_full_text)).perform(setSwitchValue(false));
+        onView(withId(R.id.switch_showFullText)).perform(setSwitchValue(true));
+        onView(withId(R.id.switch_showFullText)).perform(setSwitchValue(false));
 
-        onView(withId(R.id.switch_show_full_text)).check(matches(isNotChecked()));
+        onView(withId(R.id.switch_showFullText)).check(matches(isNotChecked()));
         onView(withId(R.id.editText_guess)).check(matches(allOf(isDisplayed(), withText("This is my guess"))));
         onView(withId(R.id.textView_fullText)).check(matches(not(isDisplayed())));
     }
