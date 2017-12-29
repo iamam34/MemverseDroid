@@ -50,18 +50,19 @@ public class ReviewFragment extends Fragment {
         viewModel.verse.observe(this, new Observer<Verse>() {
             @Override
             public void onChanged(@Nullable Verse verse) {
-                FragmentActivity activity = getActivity();
-                final SwitchCompat switchView = activity.findViewById(R.id.switch_showFullText);
-                final EditText editText = activity.findViewById(R.id.editText_guess);
-                final TextView textView = activity.findViewById(R.id.textView_fullText);
-                final RatingBar ratingBar = activity.findViewById(R.id.ratingBar);
-
-                switchView.setChecked(false);
-                ratingBar.setRating(0);
-                editText.setText(null);
-                editText.requestFocus();
-
                 if (verse != null) {
+                    Log.d(LOG_TAG, "verse changed to not null, updating UI");
+                    FragmentActivity activity = getActivity();
+
+                    final SwitchCompat switchView = activity.findViewById(R.id.switch_showFullText);
+                    final EditText editText = activity.findViewById(R.id.editText_guess);
+                    final TextView textView = activity.findViewById(R.id.textView_fullText);
+                    final RatingBar ratingBar = activity.findViewById(R.id.ratingBar);
+
+                    switchView.setChecked(false);
+                    ratingBar.setRating(0);
+                    editText.setText(null);
+                    editText.requestFocus();
                     textView.setText(verse.text);
                 }
             }

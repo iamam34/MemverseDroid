@@ -43,7 +43,7 @@ public class Repository {
 
     @Inject
     Repository() {
-
+        Log.d(LOG_TAG, "calling constructor");
     }
 
     public List<Verse> getVerses() {

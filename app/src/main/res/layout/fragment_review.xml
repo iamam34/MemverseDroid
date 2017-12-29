@@ -29,8 +29,7 @@
             android:inputType="textMultiLine|textCapSentences"
             android:freezesText="true"
             android:contentDescription="@string/desc_editText_guess"
-            tools:ignore="LabelFor">
-        </EditText>
+            tools:ignore="LabelFor"/>
 
         <EditText
             android:id="@+id/textView_fullText"
