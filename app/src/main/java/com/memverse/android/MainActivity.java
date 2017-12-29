@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.content_frame, fragment)
+                    .replace(R.id.frameLayout_content, fragment)
                     .commit();
             setTitle(menuItem.getTitle());
         }

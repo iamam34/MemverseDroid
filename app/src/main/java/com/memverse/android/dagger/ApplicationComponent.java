@@ -1,6 +1,7 @@
 package com.memverse.android.dagger;
 
 import com.memverse.android.dagger.util.ViewModelProviderFactory;
+import com.memverse.android.list.MemversesListAdapter;
 
 import javax.inject.Singleton;
 
@@ -14,4 +15,6 @@ import dagger.Component;
 @Singleton
 public interface ApplicationComponent {
     ViewModelProviderFactory viewModelProviderFactory();
+
+    MemversesListAdapter memversesListAdapter();
 }

@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Abstraction layer to retrieve and update persisted data.
  * Created by amy on 10/12/17.
  */
-
+@Singleton
 public class Repository {
 
     private static final String LOG_TAG = Repository.class.getCanonicalName();
@@ -41,7 +42,7 @@ public class Repository {
     }
 
     @Inject
-    public Repository() {
+    Repository() {
 
     }
 

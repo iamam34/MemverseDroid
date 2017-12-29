@@ -11,20 +11,20 @@ import com.memverse.datacontracts.Verse;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 /**
  * Wraps the data set and creates views for individual verses.
  * <p>
  * Created by amy on 12/12/17.
  */
 
-class MemversesListAdapter extends RecyclerView.Adapter<MemverseViewHolder> {
+public class MemversesListAdapter extends RecyclerView.Adapter<MemverseViewHolder> {
 
-    private final Repository repository;
     private List<Verse> verses;
 
-    MemversesListAdapter() {
-        this.repository = new Repository();
-
+    @Inject
+    MemversesListAdapter(Repository repository) {
         this.verses = repository.getVerses();
     }
 

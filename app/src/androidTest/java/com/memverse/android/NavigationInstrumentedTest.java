@@ -62,7 +62,7 @@ public class NavigationInstrumentedTest {
         onView(withId(R.id.nav_view))
                 .perform(navigateTo(R.id.menu_item_nav_list));
 
-        onView(withId(R.id.recyclerView_memverses_list)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerView_memversesList)).check(matches(isDisplayed()));
     }
 
     @Test
