@@ -5,7 +5,6 @@ import org.apache.oltu.oauth2.client.request.OAuthBearerClientRequest;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest.AuthenticationRequestBuilder;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest.TokenRequestBuilder;
-import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
@@ -72,7 +71,6 @@ public class OAuth implements Interceptor {
     @Override
     public Response intercept(Chain chain)
             throws IOException {
-
         return retryingIntercept(chain, true);
     }
 
@@ -129,7 +127,7 @@ public class OAuth implements Interceptor {
     public synchronized boolean updateAccessToken(String requestAccessToken) throws IOException {
         if (getAccessToken() == null || getAccessToken().equals(requestAccessToken)) {
             try {
-                OAuthJSONAccessTokenResponse accessTokenResponse = oauthClient.accessToken(this.tokenRequestBuilder.buildBodyMessage());
+                MemverseAccessTokenResponse accessTokenResponse = oauthClient.resource(this.tokenRequestBuilder.buildBodyMessage(), org.apache.oltu.oauth2.common.OAuth.HttpMethod.POST, MemverseAccessTokenResponse.class);
                 if (accessTokenResponse != null && accessTokenResponse.getAccessToken() != null) {
                     setAccessToken(accessTokenResponse.getAccessToken());
                     if (accessTokenListener != null) {

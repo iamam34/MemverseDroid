@@ -45,7 +45,6 @@ public class ApiClient {
             Interceptor auth;
             if ("oauth2".equals(authName)) {
                 auth = new OAuth(OAuthFlow.password, "/oauth/authorize", "https://www.memverse.com/oauth/token", "public, read, write, admin");
-                // TODO remove auth = new OAuth(OAuthFlow.implicit, "/oauth/authorize", "/oauth/token", "public, read, write, admin");
             } else {
                 throw new RuntimeException("auth name \"" + authName + "\" not found in available auth names");
             }
