@@ -15,6 +15,7 @@ package com.memverse.apiclient.api;
 
 import com.memverse.apiclient.ApiClient;
 import com.memverse.apiclient.ApiException;
+import com.memverse.apiclient.MemverseApiConstants;
 import com.memverse.apiclient.model.AccessToken;
 
 import org.junit.Test;
@@ -32,17 +33,13 @@ import static org.junit.Assert.assertThat;
  */
 public class AuthorizationApiTest {
 
-
-    private static final String clientId = null;
-    private static final String clientSecret = null;
-
     private final AuthorizationApi api;
 
     public AuthorizationApiTest() {
         ApiClient apiClient = new ApiClient();
         apiClient.setBasePath("https://www.memverse.com");
-        apiClient.setUsername(clientId);
-        apiClient.setPassword(clientSecret);
+        apiClient.setUsername(MemverseApiConstants.CLIENT_ID);
+        apiClient.setPassword(MemverseApiConstants.CLIENT_SECRET);
         api = new AuthorizationApi(apiClient);
     }
 
@@ -55,9 +52,9 @@ public class AuthorizationApiTest {
     @Test
     public void requestAccessTokenTest() throws ApiException {
         String grantType = "password";
-        String username = null;
-        String password = null;
-        String clientId = AuthorizationApiTest.clientId;
+        String username = MemverseApiConstants.USERNAME;
+        String password = MemverseApiConstants.PASSWORD;
+        String clientId = MemverseApiConstants.CLIENT_ID;
         AccessToken response = api.requestAccessToken(grantType, username, password, clientId);
 
         assertNotNull(response);
