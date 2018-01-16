@@ -40,7 +40,7 @@ import io.gsonfire.GsonFireBuilder;
 public class JSON {
     private Gson gson;
     private boolean isLenientOnJson = false;
-    private DateTypeAdapter dateTypeAdapter = new DateTypeAdapter();
+    private TimestampDateTypeAdapter dateTypeAdapter = new TimestampDateTypeAdapter();
     private SqlDateTypeAdapter sqlDateTypeAdapter = new SqlDateTypeAdapter();
     private OffsetDateTimeTypeAdapter offsetDateTimeTypeAdapter = new OffsetDateTimeTypeAdapter();
     private LocalDateTypeAdapter localDateTypeAdapter = new LocalDateTypeAdapter();
@@ -346,9 +346,22 @@ public class JSON {
         }
     }
 
-    public JSON setDateFormat(DateFormat dateFormat) {
-        dateTypeAdapter.setFormat(dateFormat);
-        return this;
+    public static class TimestampDateTypeAdapter extends TypeAdapter<Date> {
+        @Override
+        public void write(JsonWriter out, Date value) throws IOException {
+            if (value == null)
+                out.nullValue();
+            else
+                out.value(value.getTime() * 1000);
+        }
+
+        @Override
+        public Date read(JsonReader in) throws IOException {
+            if (in != null)
+                return new Date(in.nextLong() * 1000);
+            else
+                return null;
+        }
     }
 
     public JSON setSqlDateFormat(DateFormat dateFormat) {

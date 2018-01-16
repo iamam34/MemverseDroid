@@ -108,10 +108,11 @@ public class ApiClient {
         json = new JSON();
 
         // Set default User-Agent.
-        setUserAgent("Swagger-Codegen/1.0.0/java");
+        setUserAgent("MemverseDroid"); // TODO add version from settings
 
         // Setup authentications (key: authentication name, value: authentication).
-        authentications = new HashMap<String, Authentication>();
+        authentications = new HashMap<>();
+        authentications.put("basic", new HttpBasicAuth());
         authentications.put("oauth2", new OAuth());
         // Prevent the authentications from being modified.
         authentications = Collections.unmodifiableMap(authentications);
@@ -236,15 +237,6 @@ public class ApiClient {
     public ApiClient setKeyManagers(KeyManager[] managers) {
         this.keyManagers = managers;
         applySslSettings();
-        return this;
-    }
-
-    public DateFormat getDateFormat() {
-        return dateFormat;
-    }
-
-    public ApiClient setDateFormat(DateFormat dateFormat) {
-        this.json.setDateFormat(dateFormat);
         return this;
     }
 

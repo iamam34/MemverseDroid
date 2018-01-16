@@ -13,6 +13,7 @@
 
 package com.memverse.apiclient.api;
 
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.memverse.apiclient.ApiCallback;
 import com.memverse.apiclient.ApiClient;
@@ -22,7 +23,7 @@ import com.memverse.apiclient.Configuration;
 import com.memverse.apiclient.Pair;
 import com.memverse.apiclient.ProgressRequestBody;
 import com.memverse.apiclient.ProgressResponseBody;
-import com.memverse.apiclient.model.User;
+import com.memverse.apiclient.model.AccessToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -50,6 +51,28 @@ public class AuthorizationApi {
         this.apiClient = apiClient;
     }
 
+    class RequestAccessTokenBody {
+
+        @SerializedName("username")
+        public final String username;
+
+        @SerializedName("password")
+        public final String password;
+
+        @SerializedName("grant_type")
+        public final String grantType;
+
+        @SerializedName("client_id")
+        public final String clientId;
+
+        RequestAccessTokenBody(String username, String password, String grantType, String clientId) {
+            this.username = username;
+            this.password = password;
+            this.grantType = grantType;
+            this.clientId = clientId;
+        }
+    }
+
     /**
      * Build call for requestAccessToken
      *
@@ -63,14 +86,9 @@ public class AuthorizationApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call requestAccessTokenCall(String grantType, String username, String password, String clientId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        Object localVarPostBody = null;
+        Object localVarPostBody = new RequestAccessTokenBody(username, password, grantType, clientId);
 
-        // create path and map variables
-        String localVarPath = "/oauth/token"
-                .replaceAll("\\{" + "grant_type" + "\\}", apiClient.escapeString(grantType.toString()))
-                .replaceAll("\\{" + "username" + "\\}", apiClient.escapeString(username.toString()))
-                .replaceAll("\\{" + "password" + "\\}", apiClient.escapeString(password.toString()))
-                .replaceAll("\\{" + "client_id" + "\\}", apiClient.escapeString(clientId.toString()));
+        String localVarPath = "/oauth/token";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -103,7 +121,7 @@ public class AuthorizationApi {
             });
         }
 
-        String[] localVarAuthNames = new String[]{};
+        String[] localVarAuthNames = new String[]{"basic"};
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
 
@@ -146,8 +164,8 @@ public class AuthorizationApi {
      * @return User
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public User requestAccessToken(String grantType, String username, String password, String clientId) throws ApiException {
-        ApiResponse<User> resp = requestAccessTokenWithHttpInfo(grantType, username, password, clientId);
+    public AccessToken requestAccessToken(String grantType, String username, String password, String clientId) throws ApiException {
+        ApiResponse<AccessToken> resp = requestAccessTokenWithHttpInfo(grantType, username, password, clientId);
         return resp.getData();
     }
 
@@ -161,9 +179,9 @@ public class AuthorizationApi {
      * @return ApiResponse&lt;User&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<User> requestAccessTokenWithHttpInfo(String grantType, String username, String password, String clientId) throws ApiException {
+    public ApiResponse<AccessToken> requestAccessTokenWithHttpInfo(String grantType, String username, String password, String clientId) throws ApiException {
         com.squareup.okhttp.Call call = requestAccessTokenValidateBeforeCall(grantType, username, password, clientId, null, null);
-        Type localVarReturnType = new TypeToken<User>() {
+        Type localVarReturnType = new TypeToken<AccessToken>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -180,7 +198,7 @@ public class AuthorizationApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call requestAccessTokenAsync(String grantType, String username, String password, String clientId, final ApiCallback<User> callback) throws ApiException {
+    public com.squareup.okhttp.Call requestAccessTokenAsync(String grantType, String username, String password, String clientId, final ApiCallback<AccessToken> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -202,7 +220,7 @@ public class AuthorizationApi {
         }
 
         com.squareup.okhttp.Call call = requestAccessTokenValidateBeforeCall(grantType, username, password, clientId, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<User>() {
+        Type localVarReturnType = new TypeToken<AccessToken>() {
         }.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;

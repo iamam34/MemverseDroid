@@ -13,19 +13,38 @@
 
 package com.memverse.apiclient.api;
 
+import com.memverse.apiclient.ApiClient;
 import com.memverse.apiclient.ApiException;
-import com.memverse.apiclient.model.User;
+import com.memverse.apiclient.model.AccessToken;
 
-import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.Date;
+
+import static com.memverse.apiclient.CustomMatchers.isWithinASecondOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * API tests for AuthorizationApi
  */
-@Ignore
 public class AuthorizationApiTest {
 
-    private final AuthorizationApi api = new AuthorizationApi();
+
+    private static final String clientId = null;
+    private static final String clientSecret = null;
+
+    private final AuthorizationApi api;
+
+    public AuthorizationApiTest() {
+        ApiClient apiClient = new ApiClient();
+        apiClient.setBasePath("https://www.memverse.com");
+        apiClient.setUsername(clientId);
+        apiClient.setPassword(clientSecret);
+        api = new AuthorizationApi(apiClient);
+    }
 
 
     /**
@@ -35,13 +54,17 @@ public class AuthorizationApiTest {
      */
     @Test
     public void requestAccessTokenTest() throws ApiException {
-        String grantType = null;
+        String grantType = "password";
         String username = null;
         String password = null;
-        String clientId = null;
-        User response = api.requestAccessToken(grantType, username, password, clientId);
+        String clientId = AuthorizationApiTest.clientId;
+        AccessToken response = api.requestAccessToken(grantType, username, password, clientId);
 
-        // TODO: test validations
+        assertNotNull(response);
+        assertNotNull(response.getAccessToken());
+        assertNotEquals("", response.getAccessToken());
+        assertEquals("bearer", response.getTokenType());
+        assertEquals("public", response.getScope());
+        assertThat(response.getCreatedAt(), isWithinASecondOf(new Date()));
     }
-
 }
