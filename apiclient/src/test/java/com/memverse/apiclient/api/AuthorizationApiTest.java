@@ -13,7 +13,6 @@
 
 package com.memverse.apiclient.api;
 
-import com.memverse.apiclient.ApiClient;
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.MemverseApiConstants;
 import com.memverse.apiclient.model.AccessToken;
@@ -33,16 +32,7 @@ import static org.junit.Assert.assertThat;
  */
 public class AuthorizationApiTest {
 
-    private final AuthorizationApi api;
-
-    public AuthorizationApiTest() {
-        ApiClient apiClient = new ApiClient();
-        apiClient.setBasePath("https://www.memverse.com");
-        apiClient.setUsername(MemverseApiConstants.CLIENT_ID);
-        apiClient.setPassword(MemverseApiConstants.CLIENT_SECRET);
-        api = new AuthorizationApi(apiClient);
-    }
-
+    private final AuthorizationApi api = new AuthorizationApi();
 
     /**
      * Request an API access token. This access token should be used for all future requests as per the Oauth2 Password Flow.

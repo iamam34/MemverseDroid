@@ -20,6 +20,7 @@ import com.memverse.apiclient.ApiClient;
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.ApiResponse;
 import com.memverse.apiclient.Configuration;
+import com.memverse.apiclient.MemverseApiConstants;
 import com.memverse.apiclient.Pair;
 import com.memverse.apiclient.ProgressRequestBody;
 import com.memverse.apiclient.ProgressResponseBody;
@@ -37,6 +38,10 @@ public class AuthorizationApi {
 
     public AuthorizationApi() {
         this(Configuration.getDefaultApiClient());
+
+        this.apiClient.setBasePath("https://www.memverse.com");
+        this.apiClient.setUsername(MemverseApiConstants.CLIENT_ID);
+        this.apiClient.setPassword(MemverseApiConstants.CLIENT_SECRET);
     }
 
     public AuthorizationApi(ApiClient apiClient) {
