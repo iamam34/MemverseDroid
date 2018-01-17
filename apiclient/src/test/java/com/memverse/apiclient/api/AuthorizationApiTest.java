@@ -15,15 +15,16 @@ package com.memverse.apiclient.api;
 
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.MemverseApiConstants;
+import com.memverse.apiclient.auth.OAuthFlow;
 import com.memverse.apiclient.model.AccessToken;
 
 import org.junit.Test;
 
 import java.util.Date;
 
+import static com.memverse.apiclient.CustomMatchers.isNotNullOrEmptyString;
 import static com.memverse.apiclient.CustomMatchers.isWithinASecondOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -41,15 +42,14 @@ public class AuthorizationApiTest {
      */
     @Test
     public void requestAccessTokenTest() throws ApiException {
-        String grantType = "password";
+        OAuthFlow grantType = OAuthFlow.PASSWORD;
         String username = MemverseApiConstants.USERNAME;
         String password = MemverseApiConstants.PASSWORD;
         String clientId = MemverseApiConstants.CLIENT_ID;
         AccessToken response = api.requestAccessToken(grantType, username, password, clientId);
 
         assertNotNull(response);
-        assertNotNull(response.getAccessToken());
-        assertNotEquals("", response.getAccessToken());
+        assertThat(response.getAccessToken(), isNotNullOrEmptyString());
         assertEquals("bearer", response.getTokenType());
         assertEquals("public", response.getScope());
         assertThat(response.getCreatedAt(), isWithinASecondOf(new Date()));

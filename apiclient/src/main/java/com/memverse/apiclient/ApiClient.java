@@ -16,7 +16,7 @@ package com.memverse.apiclient;
 import com.memverse.apiclient.auth.ApiKeyAuth;
 import com.memverse.apiclient.auth.Authentication;
 import com.memverse.apiclient.auth.HttpBasicAuth;
-import com.memverse.apiclient.auth.OAuth;
+import com.memverse.apiclient.auth.OAuth2;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -113,7 +113,7 @@ public class ApiClient {
         // Setup authentications (key: authentication name, value: authentication).
         authentications = new HashMap<>();
         authentications.put("basic", new HttpBasicAuth());
-        authentications.put("oauth2", new OAuth());
+        authentications.put("oauth2", new OAuth2());
         // Prevent the authentications from being modified.
         authentications = Collections.unmodifiableMap(authentications);
     }
@@ -346,8 +346,8 @@ public class ApiClient {
      */
     public void setAccessToken(String accessToken) {
         for (Authentication auth : authentications.values()) {
-            if (auth instanceof OAuth) {
-                ((OAuth) auth).setAccessToken(accessToken);
+            if (auth instanceof OAuth2) {
+                ((OAuth2) auth).setAccessToken(accessToken);
                 return;
             }
         }

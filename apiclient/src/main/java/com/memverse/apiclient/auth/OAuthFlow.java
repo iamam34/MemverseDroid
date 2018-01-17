@@ -13,6 +13,11 @@
 
 package com.memverse.apiclient.auth;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum OAuthFlow {
-    accessCode, implicit, password, application
+    @SerializedName("accessCode")ACCESS_CODE,
+    @SerializedName("implicit")IMPLICIT,
+    @SerializedName("password")PASSWORD,
+    @SerializedName("accessCode")APPLICATION
 }

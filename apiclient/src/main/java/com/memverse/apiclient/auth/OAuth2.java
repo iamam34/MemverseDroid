@@ -18,7 +18,7 @@ import com.memverse.apiclient.Pair;
 import java.util.List;
 import java.util.Map;
 
-public class OAuth implements Authentication {
+public class OAuth2 implements Authentication {
     private String accessToken;
 
     public String getAccessToken() {
