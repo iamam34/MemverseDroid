@@ -16,6 +16,7 @@ package com.memverse.apiclient.api;
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.model.User;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -23,10 +24,14 @@ import org.junit.Test;
  * API tests for UserApi
  */
 @Ignore
-public class UserApiTest {
+public class UserApiTest extends BaseApiTest {
 
     private final UserApi api = new UserApi();
 
+    @Before
+    public void setup() throws ApiException {
+        configureAuthentication(api);
+    }
 
     /**
      * Creates a new user

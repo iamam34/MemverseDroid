@@ -89,7 +89,7 @@ public class User {
     private Long maxInterval = null;
 
     @SerializedName("mnemonic_use")
-    private LocalDate mnemonicUse = null;
+    private String mnemonicUse = null;
 
     @SerializedName("american_state_id")
     private Long americanStateId = null;
@@ -547,7 +547,7 @@ public class User {
         this.maxInterval = maxInterval;
     }
 
-    public User mnemonicUse(LocalDate mnemonicUse) {
+    public User mnemonicUse(String mnemonicUse) {
         this.mnemonicUse = mnemonicUse;
         return this;
     }
@@ -558,11 +558,11 @@ public class User {
      * @return mnemonicUse
      **/
     @ApiModelProperty(value = "")
-    public LocalDate getMnemonicUse() {
+    public String getMnemonicUse() {
         return mnemonicUse;
     }
 
-    public void setMnemonicUse(LocalDate mnemonicUse) {
+    public void setMnemonicUse(String mnemonicUse) {
         this.mnemonicUse = mnemonicUse;
     }
 

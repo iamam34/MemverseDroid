@@ -15,19 +15,33 @@ package com.memverse.apiclient.api;
 
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.model.Memverse;
-import com.memverse.apiclient.model.MemverseInput;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.List;
+
+import static com.memverse.apiclient.CustomMatchers.hasId;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * API tests for MemverseApi
  */
-@Ignore
-public class MemverseApiTest {
+public class MemverseApiTest extends BaseApiTest {
 
     private final MemverseApi api = new MemverseApi();
 
+    @Before
+    public void setup() throws ApiException {
+        configureAuthentication(api);
+    }
 
     /**
      * Creates a new memory verse
@@ -36,11 +50,13 @@ public class MemverseApiTest {
      */
     @Test
     public void createMemverseTest() throws ApiException {
-        MemverseInput verseId = null;
-        Memverse response = api.createMemverse(verseId);
+        Long verseId = 1328970L;
+        List<Memverse> response = api.createMemverse(verseId);
 
-        // TODO: test validations
+        assertNotNull(response);
+        assertThat(response, hasItem(hasId(equalTo(verseId))));
     }
+
 
     /**
      * Delete a memory verse
@@ -49,10 +65,10 @@ public class MemverseApiTest {
      */
     @Test
     public void deleteMemverseByIdTest() throws ApiException {
-        Long id = null;
+        Long id = 1L;
         Memverse response = api.deleteMemverseById(id);
 
-        // TODO: test validations
+        assertNotNull(response);
     }
 
     /**
@@ -62,10 +78,13 @@ public class MemverseApiTest {
      */
     @Test
     public void findMemverseByIdTest() throws ApiException {
-        Long id = null;
-        Memverse response = api.findMemverseById(id);
+        Long memverseId = 1768886L;
+        Memverse response = api.findMemverseById(memverseId);
 
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(memverseId, response.getId());
+        assertNotNull(response.getVerse());
+        assertNotNull(response.getVerse().getId());
     }
 
     /**
@@ -77,9 +96,13 @@ public class MemverseApiTest {
     public void showMemversesTest() throws ApiException {
         String sort = null;
         Long page = null;
-        Memverse response = api.showMemverses(sort, page);
+        List<Memverse> response = api.showMemverses(sort, page);
 
-        // TODO: test validations
+        assertNotNull(response);
+        assertThat(response, everyItem(hasId(notNullValue(Long.class))));
+        Memverse memverse = response.get(0);
+        assertNotNull(memverse.getVerse());
+        assertNotNull(memverse.getVerse().getId());
     }
 
     /**
@@ -87,6 +110,7 @@ public class MemverseApiTest {
      *
      * @throws ApiException if the Api call fails
      */
+    @Ignore
     @Test
     public void showMemversesForPassageTest() throws ApiException {
         Long passageId = null;
@@ -101,6 +125,7 @@ public class MemverseApiTest {
      *
      * @throws ApiException if the Api call fails
      */
+    @Ignore
     @Test
     public void updateMemverseByIdTest() throws ApiException {
         Long id = null;

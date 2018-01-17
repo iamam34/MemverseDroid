@@ -23,6 +23,7 @@ import com.memverse.apiclient.Pair;
 import com.memverse.apiclient.ProgressRequestBody;
 import com.memverse.apiclient.ProgressResponseBody;
 import com.memverse.apiclient.model.FinalVerse;
+import com.memverse.apiclient.model.Response;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -31,23 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FinalVersesApi {
-    private ApiClient apiClient;
-
+public class FinalVersesApi extends BaseApi {
     public FinalVersesApi() {
         this(Configuration.getDefaultApiClient());
     }
 
     public FinalVersesApi(ApiClient apiClient) {
-        this.apiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return apiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        super(apiClient);
     }
 
     /**
@@ -58,7 +49,7 @@ public class FinalVersesApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call showFinalVersesCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call showFinalVersesCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
@@ -114,9 +105,9 @@ public class FinalVersesApi {
      * @return FinalVerse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public FinalVerse showFinalVerses() throws ApiException {
-        ApiResponse<FinalVerse> resp = showFinalVersesWithHttpInfo();
-        return resp.getData();
+    public List<FinalVerse> showFinalVerses() throws ApiException {
+        ApiResponse<Response<List<FinalVerse>>> resp = showFinalVersesWithHttpInfo();
+        return resp.getData().getResponse();
     }
 
     /**
@@ -125,9 +116,9 @@ public class FinalVersesApi {
      * @return ApiResponse&lt;FinalVerse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<FinalVerse> showFinalVersesWithHttpInfo() throws ApiException {
+    private ApiResponse<Response<List<FinalVerse>>> showFinalVersesWithHttpInfo() throws ApiException {
         com.squareup.okhttp.Call call = showFinalVersesValidateBeforeCall(null, null);
-        Type localVarReturnType = new TypeToken<FinalVerse>() {
+        Type localVarReturnType = new TypeToken<Response<List<FinalVerse>>>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -140,7 +131,7 @@ public class FinalVersesApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call showFinalVersesAsync(final ApiCallback<FinalVerse> callback) throws ApiException {
+    public com.squareup.okhttp.Call showFinalVersesAsync(final ApiCallback<Response<List<FinalVerse>>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -162,7 +153,7 @@ public class FinalVersesApi {
         }
 
         com.squareup.okhttp.Call call = showFinalVersesValidateBeforeCall(progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<FinalVerse>() {
+        Type localVarReturnType = new TypeToken<Response<List<FinalVerse>>>() {
         }.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;

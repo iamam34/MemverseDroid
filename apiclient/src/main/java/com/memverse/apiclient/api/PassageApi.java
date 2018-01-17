@@ -32,23 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PassageApi {
-    private ApiClient apiClient;
-
+public class PassageApi extends BaseApi {
     public PassageApi() {
         this(Configuration.getDefaultApiClient());
     }
 
     public PassageApi(ApiClient apiClient) {
-        this.apiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return apiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        super(apiClient);
     }
 
     /**

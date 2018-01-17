@@ -50,10 +50,8 @@ public class CustomMatchers {
         return allOf(notNullValue(), not(equalTo("")));
     }
 
-    public static Matcher<Memverse> hasId(final Long memverseId) {
+    public static Matcher<Memverse> hasId(final Matcher<Long> idMatcher) {
         return new BaseMatcher<Memverse>() {
-
-            private final Matcher<Long> idMatcher = equalTo(memverseId);
 
             @Override
             public boolean matches(Object item) {

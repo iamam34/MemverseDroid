@@ -16,6 +16,7 @@ package com.memverse.apiclient.api;
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.model.ProgressReport;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -23,10 +24,14 @@ import org.junit.Test;
  * API tests for ProgressReportsApi
  */
 @Ignore
-public class ProgressReportsApiTest {
+public class ProgressReportsApiTest extends BaseApiTest {
 
     private final ProgressReportsApi api = new ProgressReportsApi();
 
+    @Before
+    public void setup() throws ApiException {
+        configureAuthentication(api);
+    }
 
     /**
      * Returns progress data for user

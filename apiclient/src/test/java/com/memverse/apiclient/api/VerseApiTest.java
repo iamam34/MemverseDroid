@@ -16,6 +16,7 @@ package com.memverse.apiclient.api;
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.model.Verse;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -23,10 +24,14 @@ import org.junit.Test;
  * API tests for VerseApi
  */
 @Ignore
-public class VerseApiTest {
+public class VerseApiTest extends BaseApiTest {
 
     private final VerseApi api = new VerseApi();
 
+    @Before
+    public void setup() throws ApiException {
+        configureAuthentication(api);
+    }
 
     /**
      * Lookup a chapter by translation, book, and chapter number

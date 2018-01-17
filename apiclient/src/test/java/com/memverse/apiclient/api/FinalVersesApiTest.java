@@ -16,17 +16,24 @@ package com.memverse.apiclient.api;
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.model.FinalVerse;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * API tests for FinalVersesApi
  */
-@Ignore
-public class FinalVersesApiTest {
+public class FinalVersesApiTest extends BaseApiTest {
 
     private final FinalVersesApi api = new FinalVersesApi();
 
+    @Before
+    public void setup() throws ApiException {
+        configureAuthentication(api);
+    }
 
     /**
      * Returns final verse for each chapter of the Bible
@@ -35,9 +42,13 @@ public class FinalVersesApiTest {
      */
     @Test
     public void showFinalVersesTest() throws ApiException {
-        FinalVerse response = api.showFinalVerses();
+        List<FinalVerse> response = api.showFinalVerses();
 
-        // TODO: test validations
+        assertNotNull(response);
+        FinalVerse finalVerse = response.get(0);
+        assertNotNull(finalVerse.getBook());
+        assertNotNull(finalVerse.getChapter());
+        assertNotNull(finalVerse.getLastVerse());
     }
 
 }

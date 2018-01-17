@@ -16,6 +16,7 @@ package com.memverse.apiclient.api;
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.model.Quiz;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -23,10 +24,14 @@ import org.junit.Test;
  * API tests for QuizApi
  */
 @Ignore
-public class QuizApiTest {
+public class QuizApiTest extends BaseApiTest {
 
     private final QuizApi api = new QuizApi();
 
+    @Before
+    public void setup() throws ApiException {
+        configureAuthentication(api);
+    }
 
     /**
      * Returns the upcoming live quiz

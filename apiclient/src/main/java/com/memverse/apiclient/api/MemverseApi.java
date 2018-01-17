@@ -23,7 +23,7 @@ import com.memverse.apiclient.Pair;
 import com.memverse.apiclient.ProgressRequestBody;
 import com.memverse.apiclient.ProgressResponseBody;
 import com.memverse.apiclient.model.Memverse;
-import com.memverse.apiclient.model.MemverseInput;
+import com.memverse.apiclient.model.Response;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -32,23 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MemverseApi {
-    private ApiClient apiClient;
-
+public class MemverseApi extends BaseApi {
     public MemverseApi() {
         this(Configuration.getDefaultApiClient());
     }
 
     public MemverseApi(ApiClient apiClient) {
-        this.apiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return apiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        super(apiClient);
     }
 
     /**
@@ -60,8 +50,8 @@ public class MemverseApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call createMemverseCall(MemverseInput verseId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        Object localVarPostBody = verseId;
+    private com.squareup.okhttp.Call createMemverseCall(Long verseId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        String localVarPostBody = verseId.toString();
 
         // create path and map variables
         String localVarPath = "/memverses";
@@ -102,7 +92,7 @@ public class MemverseApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call createMemverseValidateBeforeCall(MemverseInput verseId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call createMemverseValidateBeforeCall(Long verseId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
 
         // verify the required parameter 'verseId' is set
         if (verseId == null) {
@@ -122,9 +112,9 @@ public class MemverseApi {
      * @return Memverse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public Memverse createMemverse(MemverseInput verseId) throws ApiException {
-        ApiResponse<Memverse> resp = createMemverseWithHttpInfo(verseId);
-        return resp.getData();
+    public List<Memverse> createMemverse(Long verseId) throws ApiException {
+        ApiResponse<Response<List<Memverse>>> resp = createMemverseWithHttpInfo(verseId);
+        return resp.getData().getResponse();
     }
 
     /**
@@ -134,9 +124,9 @@ public class MemverseApi {
      * @return ApiResponse&lt;Memverse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Memverse> createMemverseWithHttpInfo(MemverseInput verseId) throws ApiException {
+    private ApiResponse<Response<List<Memverse>>> createMemverseWithHttpInfo(Long verseId) throws ApiException {
         com.squareup.okhttp.Call call = createMemverseValidateBeforeCall(verseId, null, null);
-        Type localVarReturnType = new TypeToken<Memverse>() {
+        Type localVarReturnType = new TypeToken<Response<List<Memverse>>>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -150,7 +140,7 @@ public class MemverseApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call createMemverseAsync(MemverseInput verseId, final ApiCallback<Memverse> callback) throws ApiException {
+    public com.squareup.okhttp.Call createMemverseAsync(Long verseId, final ApiCallback<Response<List<Memverse>>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -172,7 +162,7 @@ public class MemverseApi {
         }
 
         com.squareup.okhttp.Call call = createMemverseValidateBeforeCall(verseId, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<Memverse>() {
+        Type localVarReturnType = new TypeToken<Response<List<Memverse>>>() {
         }.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
@@ -315,7 +305,7 @@ public class MemverseApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call findMemverseByIdCall(Long id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call findMemverseByIdCall(Long id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
@@ -379,8 +369,8 @@ public class MemverseApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public Memverse findMemverseById(Long id) throws ApiException {
-        ApiResponse<Memverse> resp = findMemverseByIdWithHttpInfo(id);
-        return resp.getData();
+        ApiResponse<Response<Memverse>> resp = findMemverseByIdWithHttpInfo(id);
+        return resp.getData().getResponse();
     }
 
     /**
@@ -390,9 +380,9 @@ public class MemverseApi {
      * @return ApiResponse&lt;Memverse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Memverse> findMemverseByIdWithHttpInfo(Long id) throws ApiException {
+    private ApiResponse<Response<Memverse>> findMemverseByIdWithHttpInfo(Long id) throws ApiException {
         com.squareup.okhttp.Call call = findMemverseByIdValidateBeforeCall(id, null, null);
-        Type localVarReturnType = new TypeToken<Memverse>() {
+        Type localVarReturnType = new TypeToken<Response<Memverse>>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -406,7 +396,7 @@ public class MemverseApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call findMemverseByIdAsync(Long id, final ApiCallback<Memverse> callback) throws ApiException {
+    public com.squareup.okhttp.Call findMemverseByIdAsync(Long id, final ApiCallback<Response<Memverse>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -428,7 +418,7 @@ public class MemverseApi {
         }
 
         com.squareup.okhttp.Call call = findMemverseByIdValidateBeforeCall(id, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<Memverse>() {
+        Type localVarReturnType = new TypeToken<Response<Memverse>>() {
         }.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
@@ -444,7 +434,7 @@ public class MemverseApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call showMemversesCall(String sort, Long page, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call showMemversesCall(String sort, Long page, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
@@ -506,9 +496,9 @@ public class MemverseApi {
      * @return Memverse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public Memverse showMemverses(String sort, Long page) throws ApiException {
-        ApiResponse<Memverse> resp = showMemversesWithHttpInfo(sort, page);
-        return resp.getData();
+    public List<Memverse> showMemverses(String sort, Long page) throws ApiException {
+        ApiResponse<Response<List<Memverse>>> resp = showMemversesWithHttpInfo(sort, page);
+        return resp.getData().getResponse();
     }
 
     /**
@@ -519,9 +509,9 @@ public class MemverseApi {
      * @return ApiResponse&lt;Memverse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Memverse> showMemversesWithHttpInfo(String sort, Long page) throws ApiException {
+    private ApiResponse<Response<List<Memverse>>> showMemversesWithHttpInfo(String sort, Long page) throws ApiException {
         com.squareup.okhttp.Call call = showMemversesValidateBeforeCall(sort, page, null, null);
-        Type localVarReturnType = new TypeToken<Memverse>() {
+        Type localVarReturnType = new TypeToken<Response<List<Memverse>>>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -536,7 +526,7 @@ public class MemverseApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call showMemversesAsync(String sort, Long page, final ApiCallback<Memverse> callback) throws ApiException {
+    public com.squareup.okhttp.Call showMemversesAsync(String sort, Long page, final ApiCallback<Response<List<Memverse>>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;

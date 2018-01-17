@@ -16,17 +16,24 @@ package com.memverse.apiclient.api;
 import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.model.User;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
+
+import static com.memverse.apiclient.CustomMatchers.isNotNullOrEmptyString;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * API tests for CurrentUserApi
  */
-@Ignore
-public class CurrentUserApiTest {
+public class CurrentUserApiTest extends BaseApiTest {
 
     private final CurrentUserApi api = new CurrentUserApi();
 
+    @Before
+    public void setup() throws ApiException {
+        configureAuthentication(api);
+    }
 
     /**
      * Returns credential for current user
@@ -37,7 +44,26 @@ public class CurrentUserApiTest {
     public void findCurrentUserTest() throws ApiException {
         User response = api.findCurrentUser();
 
-        // TODO: test validations
+        assertNotNull(response);
+        assertNotNull(response.getId());
+        assertThat(response.getLogin(), isNotNullOrEmptyString());
+        // assertThat(response.getIdentityUrl(), isNotNullOrEmptyString());
+        assertThat(response.getName(), isNotNullOrEmptyString());
+        assertThat(response.getEmail(), isNotNullOrEmptyString());
+        // assertThat(response.getRememberTokenExpiresAt(), isNotNullOrEmptyString());
+        // assertThat(response.getDeletedAt(), isNotNullOrEmptyString());
+        assertThat(response.getCreatedAt(), isNotNullOrEmptyString());
+        assertThat(response.getUpdatedAt(), isNotNullOrEmptyString());
+        assertNotNull(response.getLastReminder());
+        assertThat(response.getReminderFreq(), isNotNullOrEmptyString());
+        assertNotNull(response.isNewsletters());
+        // assertNotNull(response.getChurchId());
+        // assertNotNull(response.getCountryId());
+        assertThat(response.getLanguage(), isNotNullOrEmptyString());
+        assertNotNull(response.getTimeAllocation());
+        assertNotNull(response.getMemorized());
+        assertNotNull(response.getLearning());
+        // ...
     }
 
 }

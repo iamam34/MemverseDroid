@@ -29,8 +29,8 @@ public class Memverse {
     @SerializedName("id")
     private Long id = null;
 
-    @SerializedName("verse_id")
-    private Long verseId = null;
+    @SerializedName("verse")
+    private Verse verse = null;
 
     @SerializedName("user_id")
     private Long userId = null;
@@ -84,8 +84,8 @@ public class Memverse {
         this.id = id;
     }
 
-    public Memverse verseId(Long verseId) {
-        this.verseId = verseId;
+    public Memverse verse(Verse verse) {
+        this.verse = verse;
         return this;
     }
 
@@ -95,12 +95,12 @@ public class Memverse {
      * @return verseId
      **/
     @ApiModelProperty(required = true, value = "")
-    public Long getVerseId() {
-        return verseId;
+    public Verse getVerse() {
+        return verse;
     }
 
-    public void setVerseId(Long verseId) {
-        this.verseId = verseId;
+    public void setVerse(Verse verse) {
+        this.verse = verse;
     }
 
     public Memverse userId(Long userId) {
@@ -323,7 +323,7 @@ public class Memverse {
         }
         Memverse memverse = (Memverse) o;
         return Objects.equals(this.id, memverse.id) &&
-                Objects.equals(this.verseId, memverse.verseId) &&
+                Objects.equals(this.verse, memverse.verse) &&
                 Objects.equals(this.userId, memverse.userId) &&
                 Objects.equals(this.efactor, memverse.efactor) &&
                 Objects.equals(this.testInterval, memverse.testInterval) &&
@@ -339,7 +339,7 @@ public class Memverse {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, verseId, userId, efactor, testInterval, repN, nextTest, status, prevVerse, refInterval, nextRefTest, passageId, subsection);
+        return Objects.hash(id, verse, userId, efactor, testInterval, repN, nextTest, status, prevVerse, refInterval, nextRefTest, passageId, subsection);
     }
 
 
@@ -349,7 +349,7 @@ public class Memverse {
         sb.append("class Memverse {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    verseId: ").append(toIndentedString(verseId)).append("\n");
+        sb.append("    verseId: ").append(toIndentedString(verse)).append("\n");
         sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
         sb.append("    efactor: ").append(toIndentedString(efactor)).append("\n");
         sb.append("    testInterval: ").append(toIndentedString(testInterval)).append("\n");

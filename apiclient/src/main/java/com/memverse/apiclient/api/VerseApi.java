@@ -31,23 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VerseApi {
-    private ApiClient apiClient;
-
+public class VerseApi extends BaseApi {
     public VerseApi() {
         this(Configuration.getDefaultApiClient());
     }
 
     public VerseApi(ApiClient apiClient) {
-        this.apiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return apiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        super(apiClient);
     }
 
     /**

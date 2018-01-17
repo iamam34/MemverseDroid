@@ -17,6 +17,7 @@ import com.memverse.apiclient.ApiException;
 import com.memverse.apiclient.model.Memverse;
 import com.memverse.apiclient.model.Passage;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -24,10 +25,14 @@ import org.junit.Test;
  * API tests for PassageApi
  */
 @Ignore
-public class PassageApiTest {
+public class PassageApiTest extends BaseApiTest {
 
     private final PassageApi api = new PassageApi();
 
+    @Before
+    public void setup() throws ApiException {
+        configureAuthentication(api);
+    }
 
     /**
      * Delete a passage

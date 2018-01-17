@@ -22,6 +22,7 @@ import com.memverse.apiclient.Configuration;
 import com.memverse.apiclient.Pair;
 import com.memverse.apiclient.ProgressRequestBody;
 import com.memverse.apiclient.ProgressResponseBody;
+import com.memverse.apiclient.model.Response;
 import com.memverse.apiclient.model.User;
 
 import java.io.IOException;
@@ -31,23 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CurrentUserApi {
-    private ApiClient apiClient;
-
+public class CurrentUserApi extends BaseApi {
     public CurrentUserApi() {
         this(Configuration.getDefaultApiClient());
     }
 
     public CurrentUserApi(ApiClient apiClient) {
-        this.apiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return apiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        super(apiClient);
     }
 
     /**
@@ -58,7 +49,7 @@ public class CurrentUserApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call findCurrentUserCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call findCurrentUserCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
@@ -115,8 +106,8 @@ public class CurrentUserApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public User findCurrentUser() throws ApiException {
-        ApiResponse<User> resp = findCurrentUserWithHttpInfo();
-        return resp.getData();
+        ApiResponse<Response<User>> resp = findCurrentUserWithHttpInfo();
+        return resp.getData().getResponse();
     }
 
     /**
@@ -125,9 +116,9 @@ public class CurrentUserApi {
      * @return ApiResponse&lt;User&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<User> findCurrentUserWithHttpInfo() throws ApiException {
+    private ApiResponse<Response<User>> findCurrentUserWithHttpInfo() throws ApiException {
         com.squareup.okhttp.Call call = findCurrentUserValidateBeforeCall(null, null);
-        Type localVarReturnType = new TypeToken<User>() {
+        Type localVarReturnType = new TypeToken<Response<User>>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -162,7 +153,7 @@ public class CurrentUserApi {
         }
 
         com.squareup.okhttp.Call call = findCurrentUserValidateBeforeCall(progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<User>() {
+        Type localVarReturnType = new TypeToken<Response<User>>() {
         }.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;

@@ -31,23 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProgressReportsApi {
-    private ApiClient apiClient;
-
+public class ProgressReportsApi extends BaseApi {
     public ProgressReportsApi() {
         this(Configuration.getDefaultApiClient());
     }
 
     public ProgressReportsApi(ApiClient apiClient) {
-        this.apiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return apiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        super(apiClient);
     }
 
     /**
